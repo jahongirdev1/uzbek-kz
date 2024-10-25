@@ -65,6 +65,8 @@ class News(models.Model):
     image = models.ImageField(upload_to='upload', blank=True)
     posted_date = models.DateTimeField(null=True, blank=True)
     name = models.CharField(max_length=200, blank=True)
+    status = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.title
@@ -100,6 +102,8 @@ class Region(models.Model):
     image = models.ImageField(upload_to='upload', blank=True)
     longitude = models.CharField(max_length=200, blank=True)
     latitude = models.CharField(max_length=200, blank=True)
+    status = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.kod

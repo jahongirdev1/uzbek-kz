@@ -6,7 +6,7 @@ import json
 
 translator = Translator()
 def language_list(request):
-    languages = Language.objects.all().values()
+    languages = Language.objects.all().filter(status=0).values()
     return JsonResponse(list(languages), safe=False)
 @csrf_exempt
 def navbar_list(request):
@@ -14,7 +14,7 @@ def navbar_list(request):
         body = json.loads(request.body)
         lang_code = body.get('lang_code', 'ru')
 
-        navbars = Navbar.objects.all().values()
+        navbars = Navbar.objects.all().filter(status=0).values()
 
         translated_navbars = [
             {
@@ -30,7 +30,7 @@ def navbar_list(request):
 def category_list(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'en')
-        categories = Category.objects.all().values()
+        categories = Category.objects.all().filter(status=0).values()
         translated_categories = [
             {
                 'id': category['id'],
@@ -45,7 +45,7 @@ def category_list(request):
 def information_list(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'en')
-        informations = Information.objects.all().values()
+        informations = Information.objects.all().filter(status=0).values()
         translated_informations = []
         for info in informations:
             translated_info = {
@@ -69,12 +69,12 @@ def information_list(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 @csrf_exempt
 def contact_list(request):
-    lang_code = request.GET.get('lang_code', 'en')
+    lang_code = request.GET.get('lang_code', 'ru')
 
     if request.method != 'GET':
         return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
-    contacts = Contact.objects.all().values()
+    contacts = Contact.objects.all().filter(status=0).values()
 
     if not contacts:
         return JsonResponse({'message': 'No contacts found.'}, status=404)
@@ -96,57 +96,55 @@ def contact_list(request):
         translated_contacts.append(translated_contact)
 
     return JsonResponse(translated_contacts, safe=False)
+
 @csrf_exempt
 def news_list(request):
-    lang_code = request.GET.get('lang_code', 'en')
+    if request.method == 'GET':
+        lang_code = request.GET.get('lang_code', 'ru')
 
-    if request.method == 'POST':
-        body = json.loads(request.body)
-        lang_code = body.get('lang_code', 'en')
+        news_items = News.objects.all().filter(status=0).values()
+        translated_news = [
+            {
+                'id': news['id'],
+                'title': translator.translate(news['title'], dest=lang_code).text,
+                'full_desc': translator.translate(news['full_desc'], dest=lang_code).text,
+                'mini_desc': translator.translate(news['mini_desc'], dest=lang_code).text,
+                'video': news['video'],
+                'image': news['image'],
+                'posted_date': news['posted_date'],
+                'name': news['name']
+            }
+            for news in news_items
+        ]
 
-    elif request.method != 'GET':
-        return JsonResponse({'error': 'Invalid request method.'}, status=400)
+        return JsonResponse(translated_news, safe=False)
 
-    news_items = News.objects.all().values()
-    translated_news = [
-        {
-            'id': news['id'],
-            'title': translator.translate(news['title'], dest=lang_code).text,
-            'full_desc': translator.translate(news['full_desc'], dest=lang_code).text,
-            'mini_desc': translator.translate(news['mini_desc'], dest=lang_code).text,
-            'video': news['video'],
-            'image': news['image'],
-            'posted_date': news['posted_date'],
-            'name': news['name']
-        }
-        for news in news_items
-    ]
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
-    return JsonResponse(translated_news, safe=False)
 @csrf_exempt
 def region_list(request):
     lang_code = request.GET.get('lang_code', 'ru')
 
-    if request.method == 'POST':
-        body = json.loads(request.body)
-        lang_code = body.get('lang_code', 'ru')
+    if request.method == 'GET':
+        regions = Region.objects.all().filter(status=0).values()
+        translated_regions = [
+            {
+                'id': region['id'],
+                'kod': region['kod'],
+                'title': translator.translate(region['title'], dest=lang_code).text,
+                'mini_desc': translator.translate(region['mini_desc'], dest=lang_code).text,
+                'full_desc': translator.translate(region['full_desc'], dest=lang_code).text,
+                'image': region['image'],
+                'longitude': region['longitude'],
+                'latitude': region['latitude']
+            }
+            for region in regions
+        ]
 
-    regions = Region.objects.all().values()
-    translated_regions = [
-        {
-            'id': region['id'],
-            'kod': region['kod'],
-            'title': translator.translate(region['title'], dest=lang_code).text,
-            'mini_desc': translator.translate(region['mini_desc'], dest=lang_code).text,
-            'full_desc': translator.translate(region['full_desc'], dest=lang_code).text,
-            'image': region['image'],
-            'longitude': region['longitude'],
-            'latitude': region['latitude']
-        }
-        for region in regions
-    ]
+        return JsonResponse(translated_regions, safe=False)
 
-    return JsonResponse(translated_regions, safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 @csrf_exempt
 def jointogroup(request):
     if request.method == 'POST':
@@ -164,7 +162,6 @@ def jointogroup(request):
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
-
 
 @csrf_exempt
 def donate(request):
@@ -187,22 +184,11 @@ def donate(request):
 
 
 
-# {
-#     "name": "Jahongir",
-#     "iin": "123456789012",
-#     "date_birth": "2000-01-01",
-#     "phone_number": "+77020718600",
-# }
 
 
 
 
-# {
-#     "number_card": "1234567890123456",
-#     "name_card": "Jahongir Rahmanshikov",
-#     "cvv": 123,
-#     "price": 1000,
-# }
+
 
 
 
