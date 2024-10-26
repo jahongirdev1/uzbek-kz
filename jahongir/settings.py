@@ -30,11 +30,11 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '[::1]',
-    '95ac-37-150-163-252.ngrok-free.app',
+    '0efa-2a0d-b201-c0-b20-29e3-8be2-8c79-76bd.ngrok-free.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://95ac-37-150-163-252.ngrok-free.app',
+'https://0efa-2a0d-b201-c0-b20-29e3-8be2-8c79-76bd.ngrok-free.app'
 ]
 
 MEDIA_URL = '/media/'

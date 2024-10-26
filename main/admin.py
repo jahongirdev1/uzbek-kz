@@ -38,6 +38,3 @@ admin.site.register(Category, CategoryAdmin)
 class RegionAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Region, RegionAdmin)
-
-
-
