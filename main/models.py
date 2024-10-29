@@ -9,9 +9,10 @@ class Language(models.Model):
     def __str__(self):
         return self.title
 
+
 class Navbar(models.Model):
     title = models.CharField(max_length=200)
-    # child_navbars = models.ForeignKey("Navbar", on_delete=models.CASCADE, blank=True, null=True)
+    child_navbars = models.ForeignKey("Navbar", on_delete=models.CASCADE, blank=True, null=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
@@ -36,6 +37,7 @@ class Information(models.Model):
     job = models.CharField(max_length=200, blank=True)
     pdf = models.FileField(upload_to='upload', blank=True)
     qr = models.CharField(max_length=400,  blank=True)
+    buttons_title = models.CharField(max_length=400,  blank=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
@@ -108,3 +110,14 @@ class Region(models.Model):
     def __str__(self):
         return self.kod
 
+
+class FamousPersonalities(models.Model):
+    information = models.ForeignKey(Information, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = models.TextField(blank=True)
+    buttons_title = models.CharField(max_length=200, blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title

@@ -1,21 +1,20 @@
+from .models import Language, Navbar, Category, Information, Contact, News, Donate, JoinToGroup, Region, FamousPersonalities
 from django.views.decorators.csrf import csrf_exempt
-from .models import Language, Navbar, Category, Information, Contact, News, Donate, JoinToGroup, Region
 from django.http import JsonResponse
 from googletrans import Translator
+from django.db.models import Prefetch
 import json
 
 translator = Translator()
 def language_list(request):
     languages = Language.objects.all().filter(status=0).values()
     return JsonResponse(list(languages), safe=False)
+    
 @csrf_exempt
 def navbar_list(request):
     if request.method == 'GET':
-        body = json.loads(request.body)
-        lang_code = body.get('lang_code', 'ru')
-
-        navbars = Navbar.objects.all().filter(status=0).values()
-
+        lang_code = request.GET.get('lang_code', 'ru')
+        navbars = Navbar.objects.filter(status=0).values()
         translated_navbars = [
             {
                 'id': navbar['id'],
@@ -26,10 +25,11 @@ def navbar_list(request):
         ]
         return JsonResponse(translated_navbars, safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 @csrf_exempt
 def category_list(request):
     if request.method == 'GET':
-        lang_code = request.GET.get('lang_code', 'en')
+        lang_code = request.GET.get('lang_code', 'ru')
         categories = Category.objects.all().filter(status=0).values()
         translated_categories = [
             {
@@ -41,32 +41,42 @@ def category_list(request):
         ]
         return JsonResponse(translated_categories, safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 @csrf_exempt
 def information_list(request):
     if request.method == 'GET':
-        lang_code = request.GET.get('lang_code', 'en')
-        informations = Information.objects.all().filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'ru')
+
+        informations = Information.objects.filter(status=0).prefetch_related('category')
         translated_informations = []
+
         for info in informations:
             translated_info = {
-                'id': info['id'],
-                'status': info['status'],
-                'image': info['image'],
-                'pdf': info['pdf'],
-                'qr': info['qr'],
+                'id': info.id,
+                'status': info.status,
+                'image': info.image.url if info.image else "",
+                'pdf': info.pdf.url if info.pdf else "",
+                'qr': info.qr.url if info.qr else "",
+                'category_id': info.category_id,
+                'category_title': info.category.title if info.category else ""
             }
-            for key in ['title', 'full_desc', 'mini_desc', 'job']:
-                if info[key]:
+
+            for key in ['title', 'full_desc', 'mini_desc', 'job', 'buttons_title']:
+                if getattr(info, key):
                     try:
-                        translated_info[key] = translator.translate(info[key], dest=lang_code).text
+                        translated_info[key] = translator.translate(getattr(info, key), dest=lang_code).text
                     except Exception as e:
-                        translated_info[key] = info[key]
+                        translated_info[key] = getattr(info, key)
                         print(f"Translation error: {e}")
                 else:
                     translated_info[key] = ""
+
             translated_informations.append(translated_info)
+
         return JsonResponse(translated_informations, safe=False)
+
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 @csrf_exempt
 def contact_list(request):
     lang_code = request.GET.get('lang_code', 'ru')
@@ -94,25 +104,26 @@ def contact_list(request):
             'whatsapp': contact['whatsapp']
         }
         translated_contacts.append(translated_contact)
-
     return JsonResponse(translated_contacts, safe=False)
 
 @csrf_exempt
 def news_list(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'ru')
+        news_items = News.objects.filter(status=0).values()
+        def safe_translate(text, lang_code):
+            return translator.translate(text, dest=lang_code).text if text else ""
 
-        news_items = News.objects.all().filter(status=0).values()
         translated_news = [
             {
                 'id': news['id'],
-                'title': translator.translate(news['title'], dest=lang_code).text,
-                'full_desc': translator.translate(news['full_desc'], dest=lang_code).text,
-                'mini_desc': translator.translate(news['mini_desc'], dest=lang_code).text,
-                'video': news['video'],
-                'image': news['image'],
-                'posted_date': news['posted_date'],
-                'name': news['name']
+                'title': safe_translate(news.get('title'), lang_code),
+                'full_desc': safe_translate(news.get('full_desc'), lang_code),
+                'mini_desc': safe_translate(news.get('mini_desc'), lang_code),
+                'video': news.get('video'),
+                'image': news.get('image'),
+                'posted_date': news.get('posted_date'),
+                'name': news.get('name')
             }
             for news in news_items
         ]
@@ -143,6 +154,45 @@ def region_list(request):
 
         return JsonResponse(translated_regions, safe=False)
 
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+@csrf_exempt
+def famous_personalities_list(request):
+    if request.method == 'GET':
+        lang_code = request.GET.get('lang_code', 'ru')
+
+        personalities = FamousPersonalities.objects.filter(status=0).prefetch_related('information')
+        translated_personalities = []
+
+        for personality in personalities:
+            translated_personality = {
+                'id': personality.id,
+                'title': personality.title,
+                'desc': personality.desc,
+                'information_title': personality.information.title if personality.information else "",
+                'buttons_title': personality.buttons_title
+            }
+
+            for key in ['title', 'desc', 'buttons_title']:
+                if getattr(personality, key):
+                    try:
+                        translated_personality[key] = translator.translate(getattr(personality, key), dest=lang_code).text
+                    except Exception as e:
+                        translated_personality[key] = getattr(personality, key)
+                        print(f"Translation error: {e}")
+                else:
+                    translated_personality[key] = ""
+
+            if translated_personality['information_title']:
+                try:
+                    translated_personality['information_title'] = translator.translate(translated_personality['information_title'], dest=lang_code).text
+                except Exception as e:
+                    translated_personality['information_title'] = personality.information.title
+                    print(f"Translation error: {e}")
+
+            translated_personalities.append(translated_personality)
+
+        return JsonResponse(translated_personalities, safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt

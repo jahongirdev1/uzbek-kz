@@ -64,7 +64,8 @@ class TokenAcquirer:
             # unescape special ascii characters such like a \x3d(=)
             code = code.encode().decode('unicode-escape')
         except AttributeError:
-            raise Exception('Could not find TKK token for this request.\nSee https://github.com/ssut/py-googletrans/issues/234 for more details.')
+            raise Exception(
+                'Could not find TKK token for this request.\nSee https://github.com/ssut/py-googletrans/issues/234 for more details.')
         except:
             raise
 
@@ -109,7 +110,8 @@ class TokenAcquirer:
 
             self.tkk = result
 
-    def _lazy(self, value):
+    @staticmethod
+    def _lazy(value):
         """like lazy evaluation, this method returns a lambda function that
         returns value given.
         We won't be needing this because this seems to have been built for
@@ -127,7 +129,8 @@ class TokenAcquirer:
         """
         return lambda: value
 
-    def _xr(self, a, b):
+    @staticmethod
+    def _xr(a, b):
         size_b = len(b)
         c = 0
         while c < size_b - 2:
@@ -162,26 +165,26 @@ class TokenAcquirer:
         g = 0
         size = len(a)
         while g < size:
-            l = a[g]
+            li = a[g]
             # just append if l is less than 128(ascii: DEL)
-            if l < 128:
-                e.append(l)
+            if li < 128:
+                e.append(li)
             # append calculated value if l is less than 2048
             else:
-                if l < 2048:
-                    e.append(l >> 6 | 192)
+                if li < 2048:
+                    e.append(li >> 6 | 192)
                 else:
                     # append calculated value if l matches special condition
-                    if (l & 64512) == 55296 and g + 1 < size and \
+                    if (li & 64512) == 55296 and g + 1 < size and \
                             a[g + 1] & 64512 == 56320:
                         g += 1
-                        l = 65536 + ((l & 1023) << 10) + (a[g] & 1023)  # This bracket is important
-                        e.append(l >> 18 | 240)
-                        e.append(l >> 12 & 63 | 128)
+                        li = 65536 + ((li & 1023) << 10) + (a[g] & 1023)  # This bracket is important
+                        e.append(li >> 18 | 240)
+                        e.append(li >> 12 & 63 | 128)
                     else:
-                        e.append(l >> 12 | 224)
-                    e.append(l >> 6 & 63 | 128)
-                e.append(l & 63 | 128)
+                        e.append(li >> 12 | 224)
+                    e.append(li >> 6 & 63 | 128)
+                e.append(li & 63 | 128)
             g += 1
         a = b
         for i, value in enumerate(e):

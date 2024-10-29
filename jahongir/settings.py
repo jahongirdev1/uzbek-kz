@@ -25,24 +25,30 @@ SECRET_KEY = 'django-insecure-4e4rms2o-+c%l87*6^8ipd3+rl&)slnu+5znptfw6vi@*khr8@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+BASE_URL = 'https://3225-37-150-163-252.ngrok-free.app'
+
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'x-requested-with',
+    'ngrok-skip-browser-warning'
+]
 
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '[::1]',
-    '0efa-2a0d-b201-c0-b20-29e3-8be2-8c79-76bd.ngrok-free.app',
+     BASE_URL.replace("https://", "").replace("http://", ""),
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-'https://0efa-2a0d-b201-c0-b20-29e3-8be2-8c79-76bd.ngrok-free.app'
-]
+CSRF_TRUSTED_ORIGINS = [BASE_URL]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-# TELEGRAM BOT
-BOT_TOKEN = '7089495505:AAF21wmxnoBLJAPFa9ERGqLHKq-EpUoTxpk'
-CHAT_ID = '-1002222551644'
 
 # Application definition
 INSTALLED_APPS = [
@@ -54,9 +60,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,7 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'kk-kk'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Almaty'
 

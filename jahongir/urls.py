@@ -15,4 +15,8 @@ urlpatterns = [
     path('donates/', donate, name='donate'),
     path('jointogroups/',jointogroup, name='jointogroup'),
     path('regions/', region_list, name='region_list'),
+    path('famous/', famous_personalities_list, name='famous_personalities_list'),
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
