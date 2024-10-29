@@ -14,6 +14,8 @@
 
 /regions/?lang_code=kk
 
+/famous/?lang_code=kk
+
 <------- METHOD => POST ------->
 
 (/jointogroups/
@@ -27,7 +29,7 @@ BODY {
 
 <------- METHOD => POST ------->
 
-(  /donates/
+( /donates/
 
 BODY {
 "number_card": "1234567890123456",
