@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from googletrans import Translator
 from django.db.models import Prefetch
 import json
-
+# change
 translator = Translator()
 def language_list(request):
     languages = Language.objects.all().filter(status=0).values()

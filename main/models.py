@@ -41,7 +41,7 @@ class Information(models.Model):
     status = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else "Без заголовка"
 
 
 class Contact(models.Model):
