@@ -16,6 +16,7 @@ urlpatterns = [
     path('jointogroups/',jointogroup, name='jointogroup'),
     path('regions/', region_list, name='region_list'),
     path('famous/', famous_personalities_list, name='famous_personalities_list'),
+    path('information-id/', information_id, name='information_id'),
 
 ]
 if settings.DEBUG:
