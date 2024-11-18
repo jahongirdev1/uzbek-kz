@@ -7,7 +7,6 @@ models = [
     Language,
     News,
     Contact,
-    Information,
     Navbar,
     Donate,
     JoinToGroup,
@@ -16,5 +15,16 @@ models = [
     FamousPersonalities
 ]
 
+
 for model in models:
     admin.site.register(model, BaseAdmin)
+
+
+
+
+
+
+
+class InformationAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Information, InformationAdmin)

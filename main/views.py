@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from googletrans import Translator
 from django.db.models import Prefetch
 import json
-
+# change
 translator = Translator()
 def language_list(request):
     languages = Language.objects.all().filter(status=0).values()
@@ -111,6 +111,7 @@ def news_list(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'ru')
         news_items = News.objects.filter(status=0).values()
+
         def safe_translate(text, lang_code):
             return translator.translate(text, dest=lang_code).text if text else ""
 
@@ -233,7 +234,49 @@ def donate(request):
             return JsonResponse({"error": str(e)}, status=400)
 
 
+# POST
+# /infomation-id/ {
+#     "id":1,
+#     "lang_code":'kk'
+# }
 
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from googletrans import Translator
+
+translator = Translator()
+
+@csrf_exempt
+def information_id(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            id = data.get('id')
+            lang_code = data.get('lang_code')
+
+            info = FamousPersonalities.objects.get(id=id)
+            print(info.to_string())
+            if not info:
+                return JsonResponse({"error": "Information not found"}, status=400)
+
+            result = {
+                'id': id,
+                # 'image': info.information.image.url if info.information and info.information.image else "",
+                'name': info.information.title if info.information.title else "",
+                'job': translator.translate(info.information.job, dest=lang_code).text if info.information and info.information.job else "",
+                'title': translator.translate(info.title, dest=lang_code).text if info.title else "",
+                'desc': translator.translate(info.desc, dest=lang_code).text if info.desc else "",
+            }
+
+            return JsonResponse({"data": result}, status=200)
+
+        except FamousPersonalities.DoesNotExist:
+            return JsonResponse({"error": "Information does not exist"}, status=400)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+    else:
+        return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
 
