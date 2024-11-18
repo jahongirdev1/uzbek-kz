@@ -7,6 +7,9 @@ name = "pypi"
 django = "*"
 requests = "*"
 pillow = "*"
+django-jazzmin = "*"
+translator = "*"
+googletrans = "*"
 
 [dev-packages]
 
