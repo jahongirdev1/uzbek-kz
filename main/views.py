@@ -11,21 +11,24 @@ def language_list(request):
 @csrf_exempt
 def navbar_list(request):
     if request.method == 'GET':
-        navbars = Navbar.objects.filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'kk')
+        navbars = Navbar.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(navbars), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt
 def category_list(request):
     if request.method == 'GET':
-        categories = Category.objects.filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'kk')
+        categories = Category.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(categories), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt
 def information_list(request):
     if request.method == 'GET':
-        informations = Information.objects.filter(status=0).prefetch_related('category').values(
+        lang_code = request.GET.get('lang_code', 'kk')
+        informations = Information.objects.filter(status=0, language__kod=lang_code).prefetch_related('category').values(
             'id', 'status', 'image', 'pdf', 'qr', 'category_id', 'category__title'
         )
         return JsonResponse(list(informations), safe=False)
@@ -41,21 +44,24 @@ def contact_list(request):
 @csrf_exempt
 def news_list(request):
     if request.method == 'GET':
-        news_items = News.objects.filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'kk')
+        news_items = News.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(news_items), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt
 def region_list(request):
     if request.method == 'GET':
-        regions = Region.objects.filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'kk')
+        regions = Region.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(regions), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt
 def famous_personalities_list(request):
     if request.method == 'GET':
-        personalities = FamousPersonalities.objects.filter(status=0).values()
+        lang_code = request.GET.get('lang_code', 'kk')
+        personalities = FamousPersonalities.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(personalities), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 

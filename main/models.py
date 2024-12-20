@@ -183,6 +183,7 @@ class Language(models.Model):
 class Navbar(models.Model):
     title = models.CharField(max_length=200)
     child_navbars = models.ForeignKey("Navbar", on_delete=models.CASCADE, blank=True, null=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
@@ -200,6 +201,7 @@ class Navbar(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=200)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
@@ -209,6 +211,7 @@ class Category(models.Model):
 
 class Information(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True)
     full_desc = models.TextField(blank=True)
     mini_desc = models.CharField(max_length=200, blank=True)
@@ -240,6 +243,7 @@ class Contact(models.Model):
 
 
 class News(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True)
     full_desc = models.TextField(blank=True)
     mini_desc = models.CharField(max_length=200, blank=True)
@@ -258,6 +262,7 @@ class News(models.Model):
 
 
 class Region(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     kod = models.CharField(max_length=200, blank=True)
     title = models.CharField(max_length=200, blank=True)
     mini_desc = models.CharField(max_length=200, blank=True)
@@ -273,6 +278,7 @@ class Region(models.Model):
 
 
 class FamousPersonalities(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     information = models.ForeignKey(Information, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True)
     desc = models.TextField(blank=True)
