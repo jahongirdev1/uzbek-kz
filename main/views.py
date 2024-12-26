@@ -28,9 +28,7 @@ def category_list(request):
 def information_list(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'kk')
-        informations = Information.objects.filter(status=0, language__kod=lang_code).prefetch_related('category').values(
-            'id', 'status', 'image', 'pdf', 'qr', 'category_id', 'category__title'
-        )
+        informations = Information.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(informations), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 

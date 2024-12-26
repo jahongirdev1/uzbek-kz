@@ -28,7 +28,7 @@ DEBUG = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
-BASE_URL = 'https://3225-37-150-163-252.ngrok-free.app'
+BASE_URL = 'https://66af-2a0d-b201-e0-bb7-70a8-dae0-b42-2979.ngrok-free.app'
 
 CORS_ALLOW_HEADERS = [
     'content-type',
