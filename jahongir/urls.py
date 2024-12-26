@@ -13,7 +13,7 @@ urlpatterns = [
     path('api/contacts/', contact_list, name='contact_list'),
     path('api/news/', news_list, name='news_list'),
     path('api/donates/', donate, name='donate'),
-    path('api/jointogroups/',jointogroup, name='jointogroup'),
+    path('api/jointogroups/',join_to_group, name='join_to_group'),
     path('api/regions/', region_list, name='region_list'),
     path('api/famous/', famous_personalities_list, name='famous_personalities_list'),
 ]

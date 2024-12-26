@@ -64,18 +64,18 @@ def famous_personalities_list(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 @csrf_exempt
-def jointogroup(request):
+def join_to_group(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            new_jointogroup = JoinToGroup.objects.create(
+            new_join_to_group = JoinToGroup.objects.create(
                 name=data.get('name'),
                 iin=data.get('iin'),
                 date_birth=data.get('date_birth'),
                 phone_number=data.get('phone_number'),
                 status=0
             )
-            return JsonResponse({"message": "JoinToGroup successfully created!", "id": new_jointogroup.id}, status=200)
+            return JsonResponse({"message": "JoinToGroup successfully created!", "id": new_join_to_group.id}, status=200)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:
