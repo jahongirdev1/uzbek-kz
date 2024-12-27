@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.contrib import admin
 from jahongir import settings
-from django.urls import path
+from django.urls import path, include
 from main.views import *
 
 urlpatterns = [
@@ -16,6 +16,9 @@ urlpatterns = [
     path('api/jointogroups/',join_to_group, name='join_to_group'),
     path('api/regions/', region_list, name='region_list'),
     path('api/famous/', famous_personalities_list, name='famous_personalities_list'),
+    path('api/trans/', translations_list, name='translations_list'),
+    path('api/traditions/', traditions, name='traditions'),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -12,7 +12,8 @@ models = [
     JoinToGroup,
     Category,
     Region,
-    FamousPersonalities
+    FamousPersonalities,
+
 ]
 
 
@@ -28,3 +29,14 @@ for model in models:
 class InformationAdmin(admin.ModelAdmin):
     pass
 admin.site.register(Information, InformationAdmin)
+
+
+class TranslateAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Translate, TranslateAdmin)
+
+
+
+class TraditionsAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Traditions, TraditionsAdmin)

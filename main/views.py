@@ -1,8 +1,47 @@
-from .models import Language, Navbar, Category, Information, Contact, News, Donate, JoinToGroup, Region, FamousPersonalities
+from .models import Language, Navbar, Category, Information, Contact, News, Donate, JoinToGroup, Region, FamousPersonalities, Translate, Traditions
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Prefetch
 import json
+
+
+
+
+
+
+
+@csrf_exempt
+def traditions(request):
+    if request.method == 'GET':
+        traditions_list = Traditions.objects.all().values()
+        return JsonResponse(list(traditions_list), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
+
+
+
+
+
+def translations_list(request):
+    if request.method == 'GET':
+        trs = Translate.objects.all()
+        translations = {}
+        for tr in trs:
+            if tr.language:
+                if not tr.language.kod in translations:
+                    translations[tr.language.kod] = {
+
+                    }
+                translations[tr.language.kod][tr.code] = tr.value
+
+
+        return JsonResponse(dict(translations), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
 
 def language_list(request):
     languages = Language.objects.filter(status=0).values()

@@ -6,13 +6,14 @@ name = "pypi"
 [packages]
 django = "*"
 requests = "*"
-pillow = "*"
 django-jazzmin = "*"
 translator = "*"
 googletrans = "*"
+django-cors-headers = "*"
+pillow = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.12"
-python_full_version = "3.12.1"
+python_full_version = "3.12.8"
