@@ -5,14 +5,30 @@ class BaseAdmin(admin.ModelAdmin):
 
 models = [
     Language,
-    News,
     Contact,
-    Navbar,
     Donate,
     JoinToGroup,
-    Category,
-    Region,
-    FamousPersonalities,
+    FamousPersons,
+    Sport,
+    Education,
+    LastNews,
+    VideoMaterials,
+    Interview,
+    PhotoGallery,
+    AboutUs,
+    WhoAreWe,
+    PlansFor2025,
+    ProjectsFor2025,
+    OurHistory,
+    OurPartners,
+    HelpThoseInNeed,
+    Statutes,
+    YouthOrganizations,
+    EtnoCenter,
+    EtnoCenterRegion,
+    EtnoCenterManager,
+    ImportantDoc
+
 
 ]
 
@@ -20,15 +36,6 @@ models = [
 for model in models:
     admin.site.register(model, BaseAdmin)
 
-
-
-
-
-
-
-class InformationAdmin(admin.ModelAdmin):
-    pass
-admin.site.register(Information, InformationAdmin)
 
 
 class TranslateAdmin(admin.ModelAdmin):

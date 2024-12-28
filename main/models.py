@@ -6,9 +6,6 @@ from ckeditor.fields import RichTextField
 
 
 
-
-
-
 class Language(models.Model):
     kod = models.CharField(max_length=200)
     title = models.CharField(max_length=200)
@@ -16,6 +13,8 @@ class Language(models.Model):
 
     def __str__(self):
         return self.title
+
+
 
 
 class Navbar(models.Model):
@@ -151,6 +150,18 @@ class JoinToGroup(models.Model):
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 class Translate(models.Model):
     code = models.CharField(max_length=200)
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
@@ -165,7 +176,7 @@ class Test(models.Model):
     image = models.ImageField(upload_to='upload', blank=True)
     title2 = models.CharField(max_length=200)
     desc = models.TextField(blank=True)
-    content = RichTextField()
+    content = RichTextField(blank=True)
 
     def __str__(self):
         return self.title
@@ -177,11 +188,264 @@ class Traditions(models.Model):
     image = models.ImageField(upload_to='upload', blank=True)
     title2 = models.CharField(max_length=200, blank=True)
     desc = models.TextField(blank=True)
-    content = RichTextField()
-    mini_desc = RichTextField()
+    content = RichTextField(blank=True)
+    mini_desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.title
+
+
+class AboutUs(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+class FamousPersons(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    sur_name = models.CharField(max_length=200,  blank=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    position = models.CharField(max_length=200, blank=True)
+    title = models.CharField(max_length=200,  blank=True)
+    desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+
+    def __str__(self):
+        return self.sur_name
+
+class OurPartners(models.Model):
+    image = models.ImageField(upload_to='upload', blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return  self.status
+
+
+class WhoAreWe(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc =  RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+class OurHistory(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.language
+
+class YouthOrganizations(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+class Education(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    mini_desc = RichTextField(blank=True)
+    full_desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+class Sport(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    mini_desc = RichTextField(blank=True)
+    full_desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+class HelpThoseInNeed(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    mini_desc = RichTextField(blank=True)
+    full_desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.title
+
+
+class ImportantDoc(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+class Statutes(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    file = models.FileField(upload_to='upload', blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+class PlansFor2025(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    file = models.FileField(upload_to='upload', blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+
+class ProjectsFor2025(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200)
+    status = models.IntegerField(default=0)
+
+
+
+    def __str__(self):
+        return self.title
+
+
+class LastNews(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    posted_date = models.DateTimeField(null=True, blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+
+class VideoMaterials(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    video = models.FileField(upload_to="media", null=True, blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    posted_date = models.DateTimeField(null=True, blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+class PhotoGallery(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    posted_date = models.DateTimeField(null=True, blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+class Interview(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    video = models.FileField(upload_to="media", null=True, blank=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
+    mini_desc = RichTextField(blank=True)
+    full_desc = RichTextField(blank=True)
+    journalist = models.CharField(max_length=200, blank=True)
+
+
+
+
+class EtnoCenterRegion(models.Model):
+    title = models.CharField(max_length=200, blank=True)
+    titli_ru = models.CharField(max_length=200, blank=True)
+    titli_en = models.CharField(max_length=200, blank=True)
+    titli_kk = models.CharField(max_length=200, blank=True)
+    code = models.CharField(max_length=200, blank=True)
+    status = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.title
+
+
+
+
+class EtnoCenter(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    etno_center_region = models.ForeignKey(EtnoCenterRegion, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    info = RichTextField(blank=True)
+    address = models.CharField(max_length=200)
+    phone1 = models.CharField(max_length=200)
+    phone2 = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    instagram = models.CharField(max_length=200, blank=True)
+    telegram = models.CharField(max_length=200, blank=True)
+    youtube = models.CharField(max_length=200, blank=True)
+    whatsapp = models.CharField(max_length=200, blank=True)
+    longitude = models.CharField(max_length=200, blank=True)
+    latitude = models.CharField(max_length=200, blank=True)
+    status = models.IntegerField(default=0)
+
+
+
+
+class EtnoCenterManager(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    etno_center = models.ForeignKey(EtnoCenter, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='upload', blank=True)
+    first_name = models.CharField(max_length=200, blank=True)
+    last_name = models.CharField(max_length=200, blank=True)
+    position = models.CharField(max_length=200, blank=True)
+    desc = RichTextField(blank=True)
+    mini_desc = RichTextField(blank=True)
+    status = models.IntegerField(default=0)
+
+
+    def __str__(self):
+        return self.etno_center
+
+
+
+
+
+
+
+
+
+
+
 
 
 
