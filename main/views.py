@@ -1,4 +1,4 @@
-from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, OurHistory
+from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, OurHistory, Association
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Prefetch
@@ -255,8 +255,7 @@ def etno_center_manager(request):
 @csrf_exempt
 def etno_center_region(request):
     if request.method == 'GET':
-        lang_code = request.GET.get('lang_code', 'kk')
-        etno_center_region_list = EtnoCenterRegion.objects.filter(status=0, language__kod=lang_code).values()
+        etno_center_region_list = EtnoCenterRegion.objects.filter(status=0).values()
         return JsonResponse(list(etno_center_region_list), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 

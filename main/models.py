@@ -169,7 +169,7 @@ class Translate(models.Model):
 
 
     def __str__(self):
-        return self.code
+        return f'{self.code} ----> {self.language}'
 
 class Test(models.Model):
     title = models.CharField(max_length=200)
@@ -245,12 +245,13 @@ class WhoAreWe(models.Model):
 class OurHistory(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to='upload', blank=True)
+    title = models.CharField(max_length=200, blank=True)
     desc = RichTextField(blank=True)
     status = models.IntegerField(default=0)
 
 
     def __str__(self):
-        return self.language
+        return self.title
 
 class YouthOrganizations(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
