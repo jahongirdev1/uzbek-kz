@@ -223,11 +223,13 @@ class FamousPersons(models.Model):
         return self.sur_name
 
 class OurPartners(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200, blank=True)
     image = models.ImageField(upload_to='upload', blank=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
-        return  self.status
+        return  self.title
 
 
 class WhoAreWe(models.Model):
@@ -434,7 +436,21 @@ class EtnoCenterManager(models.Model):
 
 
     def __str__(self):
-        return self.etno_center
+        return self.first_name
+
+class Association(models.Model):
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
+    title = models.CharField(max_length=200)
+    desc = RichTextField(blank=True)
+    mini_desc = RichTextField(blank=True)
+    image1 = models.ImageField(upload_to='upload', blank=True)
+    image2 = models.ImageField(upload_to='upload', blank=True)
+    image3 = models.ImageField(upload_to='upload', blank=True)
+    image4 = models.ImageField(upload_to='upload', blank=True)
+    status = models.IntegerField(default=0)
+
+    def __sizeof__(self):
+        return self.title
 
 
 

@@ -31,7 +31,8 @@ urlpatterns = [
     path('api/interview/', interview, name='interview'),
     path('api/etno-center/', etno_center, name='etno_center'),
     path('api/etno-center-manager/', etno_center_manager, name='etno_center_manager'),
-    path('api/etno-center-manager/', etno_center_region, name='etno_center_region'),
+    path('api/etno-center-region/', etno_center_region, name='etno_center_region'),
+    path('api/association/', association, name='association'),
 
 
 

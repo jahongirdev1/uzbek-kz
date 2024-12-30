@@ -27,7 +27,8 @@ models = [
     EtnoCenter,
     EtnoCenterRegion,
     EtnoCenterManager,
-    ImportantDoc
+    ImportantDoc,
+    Association
 
 
 ]

@@ -261,6 +261,15 @@ def etno_center_region(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
+@csrf_exempt
+def association(request):
+    if request.method == 'GET':
+        lang_code = request.GET.get('lang_code', 'kk')
+        association_list = Association.objects.filter(status=0, language__kod=lang_code).values()
+        return JsonResponse(list(association_list), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
 
 
 
