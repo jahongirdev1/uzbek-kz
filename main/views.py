@@ -1,4 +1,4 @@
-from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, OurHistory, Association
+from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, OurHistory, Association, Contact
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Prefetch
@@ -49,6 +49,7 @@ def join_to_group(request):
                 iin=data.get('iin'),
                 date_birth=data.get('date_birth'),
                 phone_number=data.get('phone_number'),
+                region_code=data.get('region_code'),
                 status=0
             )
             return JsonResponse({"message": "JoinToGroup successfully created!", "id": new_join_to_group.id}, status=200)
@@ -269,7 +270,12 @@ def association(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
-
+@csrf_exempt
+def contact_list(request):
+    if request.method == 'GET':
+        contacts = Contact.objects.filter(status=0).values()
+        return JsonResponse(list(contacts), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 
@@ -302,12 +308,7 @@ def association(request):
 #         return JsonResponse(list(informations), safe=False)
 #     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 #
-# @csrf_exempt
-# def contact_list(request):
-#     if request.method == 'GET':
-#         contacts = Contact.objects.filter(status=0).values()
-#         return JsonResponse(list(contacts), safe=False)
-#     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 #
 # @csrf_exempt
 # def news_list(request):
