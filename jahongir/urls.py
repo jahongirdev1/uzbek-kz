@@ -33,13 +33,13 @@ urlpatterns = [
     path('api/etno-center-manager/', etno_center_manager, name='etno_center_manager'),
     path('api/etno-center-region/', etno_center_region, name='etno_center_region'),
     path('api/association/', association, name='association'),
+    path('api/contacts/', contact_list, name='contact_list'),
 
 
 
     # path('api/navbars/', navbar_list, name='navbar_list'),
     # path('api/categories/', category_list, name='category_list'),
     # path('api/informations/', information_list, name='information_list'),
-    # path('api/contacts/', contact_list, name='contact_list'),
     # path('api/news/', news_list, name='news_list'),
     # path('api/regions/', region_list, name='region_list'),
     # path('api/famous/', famous_personalities_list, name='famous_personalities_list'),
