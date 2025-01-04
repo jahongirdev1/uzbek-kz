@@ -84,7 +84,6 @@ def about_us(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'kk')
         about_us_list = AboutUs.objects.filter(status=0, language__kod=lang_code).values()
-        print(about_us_list)
         return JsonResponse(list(about_us_list), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 

@@ -1,6 +1,5 @@
 *.sqlite3
 Pipfile.lock
-media/upload/*
 main/migrations/*
 venv
 .DS_Store

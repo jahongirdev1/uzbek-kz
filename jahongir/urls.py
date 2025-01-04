@@ -5,13 +5,13 @@ from django.urls import path, include
 from main.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('api/admin/', admin.site.urls),
     path('api/languages/', language_list, name='language_list'),
     path('api/donates/', donate, name='donate'),
     path('api/jointogroups/',join_to_group, name='join_to_group'),
     path('api/trans/', translations_list, name='translations_list'),
     path('api/traditions/', traditions, name='traditions'),
-    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('api/ckeditor/', include('ckeditor_uploader.urls')),
     path('api/about-us/', about_us, name='about_us'),
     path('api/famous-persons/', famous_persons, name='famous_persons'),
     path('api/our-partners/', our_partners, name='our_partners'),
