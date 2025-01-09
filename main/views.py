@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.db.models import Prefetch
 import json
-
+from django.shortcuts import get_object_or_404
 
 
 
@@ -246,9 +246,19 @@ def etno_center(request):
 @csrf_exempt
 def etno_center_manager(request):
     if request.method == 'GET':
+        etno_center_regions_id = request.GET.get('etno_center_regions_id', 0)
         lang_code = request.GET.get('lang_code', 'kk')
-        etno_center_manager_list = EtnoCenterManager.objects.filter(status=0, language__kod=lang_code).values()
-        return JsonResponse(list(etno_center_manager_list), safe=False)
+        if not etno_center_regions_id:
+            etno_center_manager_list = EtnoCenterManager.objects.filter(status=0, language__kod=lang_code).values()
+            return JsonResponse(list(etno_center_manager_list), safe=False)
+
+        managers_id = []
+        if etno_center_regions_id:
+            etno_center_manager_list = EtnoCenterManager.objects.filter(etno_center_regions_id=EtnoCenter.etno_center_region.id).values()
+            for manger_id in etno_center_manager_list:
+                managers_id.append(manger_id)
+        return JsonResponse(list(etno_center_manager_list, managers_id), safe=False)
+
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
@@ -278,7 +288,33 @@ def contact_list(request):
 
 
 
+#exsample
 
+@csrf_exempt
+def managers_by_region(request, etno_center_region_id):
+    if request.method == 'GET':
+        lang_code = request.GET.get('lang_code', 'kk')
+        get_object_or_404(EtnoCenter, etno_center_region_id=etno_center_region_id, status=0)
+
+        managers = EtnoCenterManager.objects.filter(etno_center__etno_center_region_id=etno_center_region_id, status=0, language__kod=lang_code).values()
+
+        managers_dict = {
+            manager.id: {
+                "id": manager.id,
+                "language": manager.language,
+                "image": manager.image,
+                "first_name": manager.first_name,
+                "last_name": manager.last_name,
+                "position": manager.position,
+                "desc": manager.desc,
+                "mini_desc": manager.mini_desc,
+                "status": manager.status,
+            } for manager in managers
+        }
+
+        return JsonResponse(managers_dict, safe=False)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 

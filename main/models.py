@@ -367,24 +367,36 @@ class PhotoGallery(models.Model):
         return self.title
 
 class Interview(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    video = models.FileField(upload_to="media", null=True, blank=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    title = models.CharField(max_length=200, blank=True)
-    mini_desc = RichTextField(blank=True)
-    full_desc = RichTextField(blank=True)
-    journalist = models.CharField(max_length=200, blank=True)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
+    video = models.FileField(upload_to="media", null=True, blank=True, verbose_name="Видео")
+    image = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение")
+    title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок")
+    mini_desc = RichTextField(blank=True, verbose_name="Мини описание")
+    full_desc = RichTextField(blank=True, verbose_name="Польная описание")
+    journalist = models.CharField(max_length=200, blank=True, verbose_name="Журналист")
 
 
+    class Meta:
+        verbose_name = 'Интервью'
+        verbose_name_plural = "Интервью"
+
+
+
+    def __str__(self):
+        return self.title
 
 
 class EtnoCenterRegion(models.Model):
-    title = models.CharField(max_length=200, blank=True)
-    titli_ru = models.CharField(max_length=200, blank=True)
-    titli_en = models.CharField(max_length=200, blank=True)
-    titli_kk = models.CharField(max_length=200, blank=True)
-    code = models.CharField(max_length=200, blank=True)
-    status = models.IntegerField(default=0)
+    title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок")
+    titli_ru = models.CharField(max_length=200, blank=True, verbose_name="Заголовок русский")
+    titli_en = models.CharField(max_length=200, blank=True, verbose_name="Заголовок английский")
+    titli_kk = models.CharField(max_length=200, blank=True , verbose_name="Заголовок казахский")
+    code = models.CharField(max_length=200, blank=True, verbose_name="Код")
+    status = models.IntegerField(default=0 , verbose_name="Статус")
+    
+    class Meta:
+        verbose_name = 'Этно центр регион'
+        verbose_name_plural = "Этно центр регионы"
 
     def __str__(self):
         return self.title
@@ -393,23 +405,27 @@ class EtnoCenterRegion(models.Model):
 
 
 class EtnoCenter(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    etno_center_region = models.ForeignKey(EtnoCenterRegion, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=200, blank=True)
-    mini_desc = RichTextField(blank=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    info = RichTextField(blank=True)
-    address = models.CharField(max_length=200)
-    phone1 = models.CharField(max_length=200)
-    phone2 = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    instagram = models.CharField(max_length=200, blank=True)
-    telegram = models.CharField(max_length=200, blank=True)
-    youtube = models.CharField(max_length=200, blank=True)
-    whatsapp = models.CharField(max_length=200, blank=True)
-    longitude = models.CharField(max_length=200, blank=True)
-    latitude = models.CharField(max_length=200, blank=True)
-    status = models.IntegerField(default=0)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
+    etno_center_region = models.ForeignKey(EtnoCenterRegion, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Этно-центр-регион")
+    title = models.CharField(max_length=200, blank=True , verbose_name="Заголовок")
+    mini_desc = RichTextField(blank=True, verbose_name="Мини-описание")
+    image = models.ImageField(upload_to='upload', blank=True, verbose_name="ИзображеИзображениение")
+    info = RichTextField(blank=True , verbose_name="Информация")
+    address = models.CharField(max_length=200, verbose_name="Адрес")
+    phone1 = models.CharField(max_length=200, verbose_name="Номер 1")
+    phone2 = models.CharField(max_length=200, verbose_name="Номер 2")
+    email = models.CharField(max_length=200, verbose_name="Почта")
+    instagram = models.CharField(max_length=200, blank=True, verbose_name="Инстаграм")
+    telegram = models.CharField(max_length=200, blank=True, verbose_name="Телеграм")
+    youtube = models.CharField(max_length=200, blank=True, verbose_name="Ютуб")
+    whatsapp = models.CharField(max_length=200, blank=True, verbose_name="Ватсап")
+    longitude = models.CharField(max_length=200, blank=True, verbose_name="Долгота")
+    latitude = models.CharField(max_length=200, blank=True, verbose_name="Широта")
+    status = models.IntegerField(default=0, verbose_name="Статус")
+    
+    class Meta:
+        verbose_name = 'Этно центр '
+        verbose_name_plural = "Этно центр"
 
     def __str__(self):
         return self.title
@@ -417,15 +433,19 @@ class EtnoCenter(models.Model):
 
 
 class EtnoCenterManager(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    etno_center = models.ForeignKey(EtnoCenter, on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    first_name = models.CharField(max_length=200, blank=True)
-    last_name = models.CharField(max_length=200, blank=True)
-    position = models.CharField(max_length=200, blank=True)
-    desc = RichTextField(blank=True)
-    mini_desc = RichTextField(blank=True)
-    status = models.IntegerField(default=0)
+    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
+    etno_center = models.ForeignKey(EtnoCenter, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Этно-центр")
+    image = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение")
+    first_name = models.CharField(max_length=200, blank=True, verbose_name="Имя")
+    last_name = models.CharField(max_length=200, blank=True, verbose_name="Фамилия")
+    position = models.CharField(max_length=200, blank=True, verbose_name="Позиция")
+    desc = RichTextField(blank=True, verbose_name="Описание")
+    mini_desc = RichTextField(blank=True, verbose_name="Мини-описание")
+    status = models.IntegerField(default=0, verbose_name="Статус")
+
+    class Meta:
+        verbose_name = 'Этно центр менежер'
+        verbose_name_plural = "Этно центр менежеры"
 
     def __str__(self):
         return self.first_name
