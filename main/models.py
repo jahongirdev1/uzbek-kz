@@ -391,6 +391,7 @@ class EtnoCenterRegion(models.Model):
     titli_ru = models.CharField(max_length=200, blank=True, verbose_name="Заголовок русский")
     titli_en = models.CharField(max_length=200, blank=True, verbose_name="Заголовок английский")
     titli_kk = models.CharField(max_length=200, blank=True , verbose_name="Заголовок казахский")
+    mini_desc = RichTextField(blank=True, verbose_name="Мини-описание")
     code = models.CharField(max_length=200, blank=True, verbose_name="Код")
     status = models.IntegerField(default=0 , verbose_name="Статус")
     
