@@ -1,13 +1,13 @@
-from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, OurHistory, Association, Contact
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from django.db.models import Prefetch
 import json
+from django.db.models import Prefetch
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
+from django.views.decorators.csrf import csrf_exempt
 
-
-
-
+from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, \
+    JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, \
+    ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, \
+    OurHistory, Association, Contact
 
 
 @csrf_exempt
@@ -26,12 +26,11 @@ def translations_list(request):
             if tr.language:
                 if not tr.language.kod in translations:
                     translations[tr.language.kod] = {}
-                translations[tr.language.kod][tr.code] = tr.value
 
+                translations[tr.language.kod][tr.code] = tr.value
 
         return JsonResponse(dict(translations), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
 
 
 def language_list(request):
@@ -52,11 +51,13 @@ def join_to_group(request):
                 region_code=data.get('region_code'),
                 status=0
             )
-            return JsonResponse({"message": "JoinToGroup successfully created!", "id": new_join_to_group.id}, status=200)
+            return JsonResponse({"message": "JoinToGroup successfully created!", "id": new_join_to_group.id},
+                                status=200)
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON data"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
+
 
 @csrf_exempt
 def donate(request):
@@ -187,7 +188,6 @@ def plans_for2025(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
-
 @csrf_exempt
 def projects_for2025(request):
     if request.method == 'GET':
@@ -195,7 +195,6 @@ def projects_for2025(request):
         projects_for2025_list = ProjectsFor2025.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(projects_for2025_list), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
 
 
 @csrf_exempt
@@ -246,18 +245,16 @@ def etno_center(request):
 @csrf_exempt
 def etno_center_manager(request):
     if request.method == 'GET':
-        etno_center_regions_id = request.GET.get('etno_center_regions_id', 0)
-        lang_code = request.GET.get('lang_code', 'kk')
-        if not etno_center_regions_id:
-            etno_center_manager_list = EtnoCenterManager.objects.filter(status=0, language__kod=lang_code).values()
-            return JsonResponse(list(etno_center_manager_list), safe=False)
+        region_id = int(request.GET.get('region_id', 0))
 
-        managers_id = []
-        if etno_center_regions_id:
-            etno_center_manager_list = EtnoCenterManager.objects.filter(etno_center_regions_id=EtnoCenter.etno_center_region.id).values()
-            for manger_id in etno_center_manager_list:
-                managers_id.append(manger_id)
-        return JsonResponse(list(etno_center_manager_list, managers_id), safe=False)
+        if not region_id:
+            managers = EtnoCenterManager.objects.filter(status=0).values()
+            return JsonResponse(list(managers), safe=False)
+
+        centers = EtnoCenter.objects.filter(etno_center_region__id=region_id).values()
+        managers = EtnoCenterManager.objects.filter(status=0, etno_center__id__in=[x['id'] for x in centers]).values()
+
+        return JsonResponse(list(managers), safe=False)
 
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
@@ -287,36 +284,7 @@ def contact_list(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
-
-#exsample
-
-@csrf_exempt
-def managers_by_region(request, etno_center_region_id):
-    if request.method == 'GET':
-        lang_code = request.GET.get('lang_code', 'kk')
-        get_object_or_404(EtnoCenter, etno_center_region_id=etno_center_region_id, status=0)
-
-        managers = EtnoCenterManager.objects.filter(etno_center__etno_center_region_id=etno_center_region_id, status=0, language__kod=lang_code).values()
-
-        managers_dict = {
-            manager.id: {
-                "id": manager.id,
-                "language": manager.language,
-                "image": manager.image,
-                "first_name": manager.first_name,
-                "last_name": manager.last_name,
-                "position": manager.position,
-                "desc": manager.desc,
-                "mini_desc": manager.mini_desc,
-                "status": manager.status,
-            } for manager in managers
-        }
-
-        return JsonResponse(managers_dict, safe=False)
-
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
-
+# exsample
 
 #
 # @csrf_exempt
