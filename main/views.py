@@ -284,7 +284,7 @@ def contact_list(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
-# exsample
+# exsampledd
 
 #
 # @csrf_exempt
