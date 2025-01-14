@@ -262,8 +262,14 @@ def etno_center_manager(request):
 @csrf_exempt
 def etno_center_region(request):
     if request.method == 'GET':
-        etno_center_region_list = EtnoCenterRegion.objects.filter(status=0).values()
-        return JsonResponse(list(etno_center_region_list), safe=False)
+        lang_code = request.GET.get('lang_code', 'kk')
+        regions = EtnoCenterRegion.objects.filter(status=0).values()
+        return JsonResponse([{
+            'id': region['id'],
+            'title': region[f'titli_{lang_code}'],
+            'description': region['mini_desc'],
+            'code': region['code']
+        } for region in regions], safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
