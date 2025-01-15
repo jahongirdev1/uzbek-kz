@@ -290,7 +290,7 @@ def etno_center_info(request):
 
         # region_id va language_code orqali filterlash
         etno_center_infos = EtnoCenterInfo.objects.filter(
-            etno_center_region__id=region_id, language__kod=lang_code
+            etno_center_region__id=region_id, language__kod=language_code
         ).values('image', 'info')
 
         # Ma'lumotni JSON formatga aylantirish

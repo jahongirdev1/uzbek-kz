@@ -175,10 +175,8 @@ class Traditions(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     title = models.CharField(max_length=200, blank=True)
     image = models.ImageField(upload_to='upload', blank=True)
-    title2 = models.CharField(max_length=200, blank=True)
     desc = models.TextField(blank=True)
     content = RichTextField(blank=True)
-    mini_desc = RichTextField(blank=True)
     status = models.IntegerField(default=0)
 
 
@@ -324,6 +322,8 @@ class ProjectsFor2025(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to='upload', blank=True)
     title = models.CharField(max_length=200)
+    mini_desc = RichTextField(blank=True)
+    desc = RichTextField(blank=True)
     status = models.IntegerField(default=0)
 
 
@@ -347,6 +347,7 @@ class LastNews(models.Model):
 class VideoMaterials(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     video = models.FileField(upload_to="media", null=True, blank=True)
+    image = models.ImageField(upload_to='upload', blank=True)
     title = models.CharField(max_length=200, blank=True)
     desc = RichTextField(blank=True)
     posted_date = models.DateTimeField(null=True, blank=True)
@@ -359,7 +360,6 @@ class PhotoGallery(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(upload_to='upload', blank=True)
     title = models.CharField(max_length=200, blank=True)
-    desc = RichTextField(blank=True)
     posted_date = models.DateTimeField(null=True, blank=True)
     status = models.IntegerField(default=0)
 
@@ -374,6 +374,7 @@ class Interview(models.Model):
     mini_desc = RichTextField(blank=True, verbose_name="Мини описание")
     full_desc = RichTextField(blank=True, verbose_name="Польная описание")
     journalist = models.CharField(max_length=200, blank=True, verbose_name="Журналист")
+    status = models.IntegerField(default=0, verbose_name='Статус')
 
 
     class Meta:
@@ -387,7 +388,6 @@ class Interview(models.Model):
 
 
 class EtnoCenterRegion(models.Model):
-    title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок")
     titli_ru = models.CharField(max_length=200, blank=True, verbose_name="Заголовок русский")
     titli_en = models.CharField(max_length=200, blank=True, verbose_name="Заголовок английский")
     titli_kk = models.CharField(max_length=200, blank=True , verbose_name="Заголовок казахский")
@@ -419,7 +419,8 @@ class EtnoCenter(models.Model):
     instagram = models.CharField(max_length=200, blank=True, verbose_name="Инстаграм")
     telegram = models.CharField(max_length=200, blank=True, verbose_name="Телеграм")
     youtube = models.CharField(max_length=200, blank=True, verbose_name="Ютуб")
-    whatsapp = models.CharField(max_length=200, blank=True, verbose_name="Ватсап")
+    facebook = models.CharField(max_length=200, blank=True, verbose_name="Фейсбук")
+    tit_tok = models.CharField(max_length=200, blank=True, verbose_name="Тик Ток")
     longitude = models.CharField(max_length=200, blank=True, verbose_name="Долгота")
     latitude = models.CharField(max_length=200, blank=True, verbose_name="Широта")
     status = models.IntegerField(default=0, verbose_name="Статус")
@@ -437,8 +438,7 @@ class EtnoCenterManager(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
     etno_center = models.ForeignKey(EtnoCenter, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Этно-центр")
     image = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение")
-    first_name = models.CharField(max_length=200, blank=True, verbose_name="Имя")
-    last_name = models.CharField(max_length=200, blank=True, verbose_name="Фамилия")
+    full_name = models.CharField(max_length=200, blank=True, verbose_name="Фамилия Имя")
     position = models.CharField(max_length=200, blank=True, verbose_name="Позиция")
     desc = RichTextField(blank=True, verbose_name="Описание")
     mini_desc = RichTextField(blank=True, verbose_name="Мини-описание")
@@ -455,12 +455,11 @@ class Association(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
     title = models.CharField(max_length=200, verbose_name="Заголовок")
     desc = RichTextField(blank=True, verbose_name="Описание")
-    mini_desc = RichTextField(blank=True, verbose_name="Мини-описание")
     image1 = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение1")
     image2 = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение2")
     image3 = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение3")
     image4 = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение4")
-    status = models.IntegerField(default=0)
+    status = models.IntegerField(default=0, verbose_name='Статус')
 
     class Meta:
         verbose_name = 'Ассоциация'
@@ -478,7 +477,9 @@ class Contact(models.Model):
     instagram = models.CharField(max_length=200, blank=True, verbose_name='Инстаграм')
     telegram = models.CharField(max_length=200, blank=True, verbose_name='Телеграм')
     youtube = models.CharField(max_length=200, blank=True, verbose_name='Ютуб')
-    whatsapp = models.CharField(max_length=200, blank=True, verbose_name='Ватсап')
+    facebook = models.CharField(max_length=200, blank=True, verbose_name="Фейсбук")
+    tit_tok = models.CharField(max_length=200, blank=True, verbose_name="Тик Ток")
+    status = models.IntegerField(default=0, verbose_name='Статус')
 
     class Meta:
         verbose_name = 'Контакт'
