@@ -243,6 +243,49 @@ def etno_center(request):
 
 
 @csrf_exempt
+def etno_center_contact(request):
+    if request.method == 'GET':
+        region_id = int(request.GET.get('region_id', 0))
+
+        if not region_id:
+            etno_contact = EtnoCenter.objects.filter(status=0).values()
+            return  JsonResponse([{
+                    'id': contact['id'],
+                    'address': contact['address'],
+                    'phone1': contact['phone1'],
+                    'phone2': contact['phone2'],
+                    'email': contact['email'],
+                    'instagram': contact['instagram'],
+                    'telegram': contact['telegram'],
+                    'youtube': contact['youtube'],
+                    'whatsapp': contact['whatsapp'],
+                    'longitude': contact['longitude'],
+                    'latitude': contact['latitude'],
+                }for contact in etno_contact], safe=False)
+
+
+        etno_contact = EtnoCenter.objects.filter(status=0, etno_center_region__id=region_id)
+        return JsonResponse([{
+            'id': contact['id'],
+            'address': contact['address'],
+            'phone1': contact['phone1'],
+            'phone2': contact['phone2'],
+            'email': contact['email'],
+            'instagram': contact['instagram'],
+            'telegram': contact['telegram'],
+            'youtube': contact['youtube'],
+            'whatsapp': contact['whatsapp'],
+            'longitude': contact['longitude'],
+            'latitude': contact['latitude'],
+        }for contact in etno_contact], safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
+
+
+@csrf_exempt
 def etno_center_manager(request):
     if request.method == 'GET':
         region_id = int(request.GET.get('region_id', 0))
