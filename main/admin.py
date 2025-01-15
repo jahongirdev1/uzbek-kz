@@ -29,6 +29,7 @@ models = [
     EtnoCenterManager,
     ImportantDoc,
     Association,
+    PayLink,
 
 ]
 

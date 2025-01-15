@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/etno-center-region/', etno_center_region, name='etno_center_region'),
     path('api/association/', association, name='association'),
     path('api/contacts/', contact_list, name='contact_list'),
+    path('api/pay-link/', pay_link, name='pay_link'),
 
 
     # path('api/navbars/', navbar_list, name='navbar_list'),

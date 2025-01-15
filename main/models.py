@@ -492,6 +492,7 @@ class Contact(models.Model):
 class PayLink(models.Model):
     link = models.CharField(max_length=500, blank=True, verbose_name='Ссылка')
     card_number = models.CharField(max_length=200, blank=True, verbose_name='Номер карты' )
+    status = models.IntegerField(default=0)
 
 
     class Meta:

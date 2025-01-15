@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion, EtnoCenterManager, Donate, \
     JoinToGroup, EtnoCenter, FamousPersons, Translate, Traditions, ProjectsFor2025, PhotoGallery, OurPartners, \
     ImportantDoc, Sport, HelpThoseInNeed, AboutUs, Education, Statutes, YouthOrganizations, Interview, VideoMaterials, \
-    OurHistory, Association, Contact
+    OurHistory, Association, Contact, PayLink
 
 
 @csrf_exempt
@@ -288,6 +288,17 @@ def contact_list(request):
         contacts = Contact.objects.filter(status=0).values()
         return JsonResponse(list(contacts), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+def pay_link(request):
+    if request.method == 'GET':
+        pay_link_list = PayLink.objects.filter(status=0).values()
+        return JsonResponse(list(pay_link_list), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
 
 
 # exsampledd
