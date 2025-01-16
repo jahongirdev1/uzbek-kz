@@ -400,7 +400,7 @@ class EtnoCenterRegion(models.Model):
         verbose_name_plural = "Этно центр регионы"
 
     def __str__(self):
-        return self.title
+        return self.titli_ru
 
 
 
@@ -449,7 +449,7 @@ class EtnoCenterManager(models.Model):
         verbose_name_plural = "Этно центр менежеры"
 
     def __str__(self):
-        return self.first_name
+        return self.full_name
 
 class Association(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")

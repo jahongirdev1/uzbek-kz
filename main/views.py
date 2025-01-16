@@ -253,14 +253,14 @@ def etno_center_contact(request):
         if not region_id:
             etno_contact = EtnoCenter.objects.filter(status=0).values(
                 'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
-                'telegram', 'youtube', 'whatsapp', 'longitude', 'latitude'
+                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok',
             )
         else:
             etno_contact = EtnoCenter.objects.filter(
                 status=0, etno_center_region__id=region_id
             ).values(
                 'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
-                'telegram', 'youtube', 'whatsapp', 'longitude', 'latitude'
+                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok'
             )
 
         data = list(etno_contact)
@@ -275,29 +275,34 @@ def etno_center_contact(request):
 
 
 @csrf_exempt
+
 def etno_center_info(request):
-    if request.method == 'GET':
-        try:
-            # region_id ni tekshirish va int formatga o‘tkazish
-            region_id = int(request.GET.get('region_id', 0))
-            lang_code = request.GET.get('lang_code', 'kk')
 
-            if not language_code:
-                return JsonResponse({'error': 'language_code is required.'}, status=400)
+    try:
+        region_id = request.GET.get('region_id')
+        lang_code = request.GET.get('lang_code')
 
-        except ValueError:
-            return JsonResponse({'error': 'Invalid region_id. It must be an integer.'}, status=400)
+        if not region_id or not lang_code:
+            etno_info_list = EtnoCenter.objects.filter(status=0).values('image', 'info')
+            return JsonResponse(list(etno_info_list), safe=False)
 
-        # region_id va language_code orqali filterlash
-        etno_center_infos = EtnoCenterInfo.objects.filter(
-            etno_center_region__id=region_id, language__kod=language_code
-        ).values('image', 'info')
+        etno_center = EtnoCenter.objects.filter(
+            etno_center_region__id=region_id,  # Region ID bilan solishtirish
+            language__kod=lang_code  # Language Code bilan solishtirish
+        ).first()
 
-        # Ma'lumotni JSON formatga aylantirish
-        data = list(etno_center_infos)
-        return JsonResponse(data, safe=False)
 
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+        if not etno_center:
+            return JsonResponse({"error": "We do't have informations"}, status=404)
+
+        data = {
+            "image": etno_center.image.url if etno_center.image else None,
+            "info": etno_center.info
+        }
+        return JsonResponse(data, status=200)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 
 
