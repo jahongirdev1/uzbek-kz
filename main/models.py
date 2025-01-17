@@ -17,99 +17,6 @@ class Language(models.Model):
 
 
 
-class Navbar(models.Model):
-    title = models.CharField(max_length=200)
-    child_navbars = models.ForeignKey("Navbar", on_delete=models.CASCADE, blank=True, null=True)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    status = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-
-
-
-
-
-class Category(models.Model):
-    title = models.CharField(max_length=200)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    status = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-
-
-
-class Information(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=200, blank=True)
-    full_desc = models.TextField(blank=True)
-    mini_desc = models.CharField(max_length=200, blank=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    job = models.CharField(max_length=200, blank=True)
-    pdf = models.FileField(upload_to='upload', blank=True)
-    qr = models.CharField(max_length=400,  blank=True)
-    buttons_title = models.CharField(max_length=400,  blank=True)
-    status = models.IntegerField(default=0)
-
-
-    def __str__(self):
-        return self.title if self.title else "Без заголовка"
-
-
-
-
-
-class News(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=200, blank=True)
-    full_desc = models.TextField(blank=True)
-    mini_desc = models.CharField(max_length=200, blank=True)
-    video = models.FileField(upload_to="media", null=True, blank=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    posted_date = models.DateTimeField(null=True, blank=True)
-    name = models.CharField(max_length=200, blank=True)
-    status = models.IntegerField(default=0)
-
-
-    def __str__(self):
-        return self.title
-
-
-
-
-
-class Region(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    kod = models.CharField(max_length=200, blank=True)
-    title = models.CharField(max_length=200, blank=True)
-    mini_desc = models.CharField(max_length=200, blank=True)
-    full_desc = models.TextField(blank=True)
-    image = models.ImageField(upload_to='upload', blank=True)
-    longitude = models.CharField(max_length=200, blank=True)
-    latitude = models.CharField(max_length=200, blank=True)
-    status = models.IntegerField(default=0)
-
-
-    def __str__(self):
-        return self.kod
-
-
-class FamousPersonalities(models.Model):
-    language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    information = models.ForeignKey(Information, on_delete=models.CASCADE, blank=True, null=True)
-    title = models.CharField(max_length=200, blank=True)
-    desc = models.TextField(blank=True)
-    buttons_title = models.CharField(max_length=200, blank=True)
-    status = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-
-    def to_string(self):
-        return f'{self.title} ---> {self.desc} --> {self.buttons_title} --> {self.status} -->{self.information}'
-
 
 
 class Donate(models.Model):
@@ -143,14 +50,6 @@ class JoinToGroup(models.Model):
 
 
 
-
-
-
-
-
-
-
-
 class Translate(models.Model):
     code = models.CharField(max_length=200)
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
@@ -160,15 +59,6 @@ class Translate(models.Model):
     def __str__(self):
         return f'{self.code} ----> {self.language}'
 
-class Test(models.Model):
-    title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='upload', blank=True)
-    title2 = models.CharField(max_length=200)
-    desc = models.TextField(blank=True)
-    content = RichTextField(blank=True)
-
-    def __str__(self):
-        return self.title
 
 
 class Traditions(models.Model):
