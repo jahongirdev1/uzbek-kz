@@ -242,87 +242,87 @@ def etno_center(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
-@csrf_exempt
-def etno_center_contact(request):
-    if request.method == 'GET':
-        try:
-            region_id = int(request.GET.get('region_id', 0))
-        except ValueError:
-            return JsonResponse({'error': 'Invalid region_id. It must be an integer.'}, status=400)
-
-        if not region_id:
-            etno_contact = EtnoCenter.objects.filter(status=0).values(
-                'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
-                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok',
-            )
-        else:
-            etno_contact = EtnoCenter.objects.filter(
-                status=0, etno_center_region__id=region_id
-            ).values(
-                'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
-                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok'
-            )
-
-        data = list(etno_contact)
-        return JsonResponse(data, safe=False)
-
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
-
-
-
-
-
-
-
-@csrf_exempt
-
-def etno_center_info(request):
-
-    try:
-        region_id = request.GET.get('region_id')
-        lang_code = request.GET.get('lang_code')
-
-        if not region_id or not lang_code:
-            etno_info_list = EtnoCenter.objects.filter(status=0).values('image', 'info')
-            return JsonResponse(list(etno_info_list), safe=False)
-
-        etno_center = EtnoCenter.objects.filter(
-            etno_center_region__id=region_id,  # Region ID bilan solishtirish
-            language__kod=lang_code  # Language Code bilan solishtirish
-        ).first()
-
-
-        if not etno_center:
-            return JsonResponse({"error": "We do't have informations"}, status=404)
-
-        data = {
-            "image": etno_center.image.url if etno_center.image else None,
-            "info": etno_center.info
-        }
-        return JsonResponse(data, status=200)
-
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
-
-
-
-
-
-@csrf_exempt
-def etno_center_manager(request):
-    if request.method == 'GET':
-        region_id = int(request.GET.get('region_id', 0))
-
-        if not region_id:
-            managers = EtnoCenterManager.objects.filter(status=0).values()
-            return JsonResponse(list(managers), safe=False)
-
-        centers = EtnoCenter.objects.filter(etno_center_region__id=region_id).values()
-        managers = EtnoCenterManager.objects.filter(status=0, etno_center__id__in=[x['id'] for x in centers]).values()
-
-        return JsonResponse(list(managers), safe=False)
-
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+# @csrf_exempt
+# def etno_center_contact(request):
+#     if request.method == 'GET':
+#         try:
+#             region_id = int(request.GET.get('region_id', 0))
+#         except ValueError:
+#             return JsonResponse({'error': 'Invalid region_id. It must be an integer.'}, status=400)
+#
+#         if not region_id:
+#             etno_contact = EtnoCenter.objects.filter(status=0).values(
+#                 'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
+#                 'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok',
+#             )
+#         else:
+#             etno_contact = EtnoCenter.objects.filter(
+#                 status=0, etno_center_region__id=region_id
+#             ).values(
+#                 'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
+#                 'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok'
+#             )
+#
+#         data = list(etno_contact)
+#         return JsonResponse(data, safe=False)
+#
+#     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+#
+#
+#
+#
+#
+#
+#
+# @csrf_exempt
+#
+# def etno_center_info(request):
+#
+#     try:
+#         region_id = request.GET.get('region_id')
+#         lang_code = request.GET.get('lang_code')
+#
+#         if not region_id or not lang_code:
+#             etno_info_list = EtnoCenter.objects.filter(status=0).values('image', 'info')
+#             return JsonResponse(list(etno_info_list), safe=False)
+#
+#         etno_center = EtnoCenter.objects.filter(
+#             etno_center_region__id=region_id,  # Region ID bilan solishtirish
+#             language__kod=lang_code  # Language Code bilan solishtirish
+#         ).first()
+#
+#
+#         if not etno_center:
+#             return JsonResponse({"error": "We do't have informations"}, status=404)
+#
+#         data = {
+#             "image": etno_center.image.url if etno_center.image else None,
+#             "info": etno_center.info
+#         }
+#         return JsonResponse(data, status=200)
+#
+#     except Exception as e:
+#         return JsonResponse({"error": str(e)}, status=500)
+#
+#
+#
+#
+#
+# @csrf_exempt
+# def etno_center_manager(request):
+#     if request.method == 'GET':
+#         region_id = int(request.GET.get('region_id', 0))
+#
+#         if not region_id:
+#             managers = EtnoCenterManager.objects.filter(status=0).values()
+#             return JsonResponse(list(managers), safe=False)
+#
+#         centers = EtnoCenter.objects.filter(etno_center_region__id=region_id).values()
+#         managers = EtnoCenterManager.objects.filter(status=0, etno_center__id__in=[x['id'] for x in centers]).values()
+#
+#         return JsonResponse(list(managers), safe=False)
+#
+#     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
 @csrf_exempt
@@ -337,6 +337,119 @@ def etno_center_region(request):
             'code': region['code']
         } for region in regions], safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+def format_region_code(value):
+    if len(str(value)) == 1:
+        return f'{0}{value}'
+    else:
+        return value
+
+
+
+@csrf_exempt
+def etno_center_contact(request):
+    if request.method == 'GET':
+        try:
+
+            region_code = int(request.GET.get('region_code', 0))
+            r_code = format_region_code(region_code)
+            print(r_code)
+        except ValueError:
+            return JsonResponse({'error': 'Invalid region_code. It must be an integer.'}, status=400)
+
+        # region_code bilan filtrlangan yoki barcha ma'lumotlarni olish
+        if not r_code:
+            etno_contact = EtnoCenter.objects.filter(status=0).values(
+                'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
+                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok',
+            )
+        else:
+            etno_contact = EtnoCenter.objects.filter(
+                status=0, etno_center_region__code=r_code
+            ).values(
+                'id', 'address', 'phone1', 'phone2', 'email', 'instagram',
+                'telegram', 'youtube', 'facebook', 'longitude', 'latitude', 'tit_tok',
+            )
+
+        # Natijani tekshirish va qaytarish
+        data = list(etno_contact)
+        if not data:
+            return JsonResponse({'error': 'No data found for the given region_code.'}, status=404)
+
+        return JsonResponse(data, safe=False)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
+
+
+@csrf_exempt
+def etno_center_info(request):
+    try:
+        region_code = request.GET.get('region_code')
+        lang_code = request.GET.get('lang_code')
+
+        if not region_code or not lang_code:
+            etno_info_list = EtnoCenter.objects.filter(status=0).values('image', 'info')
+            return JsonResponse(list(etno_info_list), safe=False)
+
+        etno_centers = EtnoCenter.objects.filter(
+            etno_center_region__code=region_code,
+            language__kod=lang_code
+        ).values('image', 'info')
+
+        if not etno_centers.exists():
+            return JsonResponse({"error": "We don't have information"}, status=404)
+
+        return JsonResponse(list(etno_centers), safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+
+
+@csrf_exempt
+def etno_center_manager(request):
+    if request.method == 'GET':
+        region_code = int(request.GET.get('region_code', 0))
+        r_code = format_region_code(region_code)
+
+        if not r_code:
+            managers = EtnoCenterManager.objects.filter(status=0).values()
+            return JsonResponse(list(managers), safe=False)
+
+        centers = EtnoCenter.objects.filter(etno_center_region__code=r_code).values()
+        managers = EtnoCenterManager.objects.filter(status=0, etno_center__id__in=[x['id'] for x in centers]).values()
+
+        return JsonResponse(list(managers), safe=False)
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 @csrf_exempt

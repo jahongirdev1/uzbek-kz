@@ -183,9 +183,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 JAZZMIN_SETTINGS={
-    'site_header': 'Jahongir',
+    'site_header': 'IThub',
     'site_brand': "Site Brand",
-    'copyright': 'mr__jahongir',
+    'copyright': 'IThub',
 }
 
 
