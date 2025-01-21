@@ -12,11 +12,9 @@ __pycache__/
 db.sqlite3
 *.db
 
-/media/
 
-*/migrations/__pycache__/
-*/migrations/*.pyc
-*/migrations/*.pyo
+
+media/upload/*
 
 .idea/
 *.iml
