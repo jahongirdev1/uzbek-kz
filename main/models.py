@@ -237,6 +237,7 @@ class LastNews(models.Model):
 class VideoMaterials(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
     video = models.FileField(upload_to="media", null=True, blank=True)
+    video_url = models.CharField(max_length=200, blank=True)
     image = models.ImageField(upload_to='upload', blank=True)
     title = models.CharField(max_length=200, blank=True)
     desc = RichTextField(blank=True)
