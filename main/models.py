@@ -260,6 +260,7 @@ class PhotoGallery(models.Model):
 class Interview(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")
     video = models.FileField(upload_to="media", null=True, blank=True, verbose_name="Видео")
+    video_url = models.CharField(max_length=200, blank=True, verbose_name="Видео url")
     image = models.ImageField(upload_to='upload', blank=True, verbose_name="Изображение")
     title = models.CharField(max_length=200, blank=True, verbose_name="Заголовок")
     mini_desc = RichTextField(blank=True, verbose_name="Мини описание")
