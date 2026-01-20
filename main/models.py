@@ -249,13 +249,29 @@ class VideoMaterials(models.Model):
 
 class PhotoGallery(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True)
-    image = models.ImageField(upload_to='upload', blank=True)
     title = models.CharField(max_length=200, blank=True)
-    posted_date = models.DateTimeField(null=True, blank=True)
+    posted_date = models.DateTimeField(null=True, blank=True, auto_now_add=True)
     status = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+
+
+class GalleryImages(models.Model):
+    gallery = models.ForeignKey(
+        PhotoGallery,
+        related_name='images',
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(upload_to='upload', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.gallery.title} image"
+
+
+
 
 class Interview(models.Model):
     language = models.ForeignKey(Language, on_delete=models.CASCADE, blank=True, null=True, verbose_name="Язык")

@@ -215,13 +215,32 @@ def video_materials(request):
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
 
 
+
 @csrf_exempt
 def photo_gallery(request):
     if request.method == 'GET':
         lang_code = request.GET.get('lang_code', 'kk')
-        photo_gallery_list = PhotoGallery.objects.filter(status=0, language__kod=lang_code).values()
-        return JsonResponse(list(photo_gallery_list), safe=False)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+        galleries = PhotoGallery.objects.filter(
+            status=0,
+            language__kod=lang_code
+        ).prefetch_related('images')
+
+        result = []
+        for gallery in galleries:
+            result.append({
+                'id': gallery.id,
+                'title': gallery.title,
+                'posted_date': gallery.posted_date,
+                'images': [
+                    request.build_absolute_uri(img.image.url)
+                    for img in gallery.images.all()
+                ]
+            })
+
+        return JsonResponse(result, safe=False)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
 @csrf_exempt

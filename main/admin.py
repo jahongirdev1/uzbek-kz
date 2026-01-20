@@ -1,7 +1,22 @@
 from django.contrib import admin
 from main.models import *
+
+
 class BaseAdmin(admin.ModelAdmin):
     pass
+
+
+class GalleryImagesInline(admin.TabularInline):
+    model = GalleryImages
+    extra = 1
+    max_num = 20
+
+
+@admin.register(PhotoGallery)
+class PhotoGalleryAdmin(admin.ModelAdmin):
+    inlines = [GalleryImagesInline]
+    list_display = ('title', 'language', 'status', 'posted_date')
+
 
 models = [
     Language,
@@ -14,7 +29,6 @@ models = [
     LastNews,
     VideoMaterials,
     Interview,
-    PhotoGallery,
     AboutUs,
     WhoAreWe,
     PlansFor2025,
@@ -30,21 +44,17 @@ models = [
     ImportantDoc,
     Association,
     PayLink,
-
 ]
-
 
 for model in models:
     admin.site.register(model, BaseAdmin)
 
 
-
+@admin.register(Translate)
 class TranslateAdmin(admin.ModelAdmin):
     pass
-admin.site.register(Translate, TranslateAdmin)
 
 
-
+@admin.register(Traditions)
 class TraditionsAdmin(admin.ModelAdmin):
     pass
-admin.site.register(Traditions, TraditionsAdmin)
