@@ -23,4 +23,4 @@ venv/
 ENV/
 env/
 Pipfile
-
+Pipfile.lock

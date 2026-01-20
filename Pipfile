@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
 requests = "*"
 django-jazzmin = "*"
 translator = "*"
@@ -12,6 +11,7 @@ googletrans = "*"
 django-cors-headers = "*"
 pillow = "*"
 django-ckeditor = "*"
+django = "*"
 
 [dev-packages]
 
