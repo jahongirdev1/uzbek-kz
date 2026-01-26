@@ -10,12 +10,7 @@ from .models import Language, PlansFor2025, LastNews, WhoAreWe, EtnoCenterRegion
     OurHistory, Association, Contact, PayLink
 
 
-@csrf_exempt
-def traditions(request):
-    if request.method == 'GET':
-        traditions_list = Traditions.objects.all().values()
-        return JsonResponse(list(traditions_list), safe=False)
-    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
 
 
 def translations_list(request):
@@ -87,6 +82,18 @@ def about_us(request):
         about_us_list = AboutUs.objects.filter(status=0, language__kod=lang_code).values()
         return JsonResponse(list(about_us_list), safe=False)
     return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
+
+@csrf_exempt
+def traditions(request):
+    if request.method == 'GET':
+        lang_code = request.GET.get('lang_code', 'kk')
+        traditions_list = Traditions.objects.filter(status=0, language__kod=lang_code).values()
+        return JsonResponse(list(traditions_list), safe=False)
+    return JsonResponse({'error': 'Invalid request method.'}, status=400)
+
+
 
 
 @csrf_exempt
